@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Earth
+    uniqueID: 787480263
+    locked: 0
+  - name: Player
+    uniqueID: 3302035973
+    locked: 0
+  - name: Collectables
+    uniqueID: 917901605
+    locked: 0

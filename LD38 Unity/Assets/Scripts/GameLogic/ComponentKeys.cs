@@ -16,5 +16,8 @@ namespace SmallWorld.GameLogic {
         Collectables,
         ToCartesian,
         OnCollectableCollision,
+        PlayerCrouchBtn,
+        GameState,
+        OnBouncyCollision,
     }
 }

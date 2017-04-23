@@ -6,7 +6,17 @@ using UnityEngine;
 
 namespace SmallWorld.GameLogic {
     public class PlayerCharacter {
+        public enum FlipMode {
+            None, Flipping, Released
+        }
+
         public PhysicsBody body;
+        public int facing;
+        public float multiJumpCount;
+        public float multiJumpTimer;
+        public int spinCount;
+        public FlipMode flipping;
+        public float noGravTimer;
 
         public PlayerCharacter() {
             this.body = new PhysicsBody();

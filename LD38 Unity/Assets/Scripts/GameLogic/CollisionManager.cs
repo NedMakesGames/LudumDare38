@@ -27,9 +27,11 @@ namespace SmallWorld.GameLogic {
             Vector2 ppos = player.body.cartesian;
             for(int c = 0; c < collectables.list.Count ; c++) {
                 Collectable collectable = collectables.list[c];
-                Vector2 cpos = collectable.body.cartesian;
-                if((ppos - cpos).sqrMagnitude <= collectable.radius * collectable.radius) {
-                    onCollision.Send(c);
+                if(collectable.alive) {
+                    Vector2 cpos = collectable.body.cartesian;
+                    if((ppos - cpos).sqrMagnitude <= collectable.radius * collectable.radius) {
+                        onCollision.Send(c);
+                    }
                 }
             }
         }

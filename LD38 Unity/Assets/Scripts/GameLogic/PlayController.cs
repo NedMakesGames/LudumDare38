@@ -13,6 +13,7 @@ namespace SmallWorld.GameLogic {
             new CameraManager(this);
             new CollectableManager(this);
             new CollisionManager(this);
+            new CollectableMover(this);
         }
     }
 }

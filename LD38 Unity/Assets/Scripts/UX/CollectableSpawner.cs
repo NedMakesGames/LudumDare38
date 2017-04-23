@@ -48,6 +48,8 @@ namespace SmallWorld.UX {
             GameObject prefab = null;
             switch(c.type) {
             case CollectableType.Points:
+            case CollectableType.Bouncy:
+            case CollectableType.GameOver:
                 prefab = pointPrefab;
                 break;
             }

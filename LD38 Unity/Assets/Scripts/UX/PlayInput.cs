@@ -11,15 +11,18 @@ namespace SmallWorld.UX {
 
         private SubscribableFloat playerAngleAxis;
         private SubscribableBool playerJump;
+        private SubscribableBool playerCrouch;
 
         private void Start() {
             playerAngleAxis = GameLink.TempComponents.GetOrRegister<SubscribableFloat>((int)ComponentKeys.PlayerAngleAxis, SubscribableFloat.Create);
             playerJump = GameLink.TempComponents.GetOrRegister<SubscribableBool>((int)ComponentKeys.PlayerJumpBtn, SubscribableBool.Create);
+            playerCrouch = GameLink.TempComponents.GetOrRegister<SubscribableBool>((int)ComponentKeys.PlayerCrouchBtn, SubscribableBool.Create);
         }
 
         private void Update() {
             playerAngleAxis.Value = Input.GetAxisRaw("HorizontalMovement");
             playerJump.Value = Input.GetButton("Jump");
+            playerCrouch.Value = Input.GetButton("Crouch");
         }
     }
 }

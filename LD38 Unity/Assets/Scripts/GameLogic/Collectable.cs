@@ -10,9 +10,14 @@ namespace SmallWorld.GameLogic {
         None, Points, GameOver, Bouncy
     }
 
+    public enum CollectableMoveType {
+        Idle, Orbit, 
+    }
+
     public class Collectable {
         public PhysicsBody body;
         public CollectableType type;
+        public CollectableMoveType movement;
         public float radius;
         public bool alive;
 

@@ -60,6 +60,28 @@ MonoBehaviour:
     upAccel: 2
     downAccel: 10
     axisSnapThreshhold: 0.9
-    jumpVel: 16
-    jumpHoldTime: 0.5
+    jumpVel: 8
+    jumpHoldTime: 0.2
     jumpHoldSpeedMinMult: 0.75
+    jumpHorizAccel: 1
+    landingMultiJumpPeriod: 0.25
+    jumpTriggerLeeway: 0.25
+    jumpHeightScaling: 0.5
+    crouchMaxVel: 0.5
+    crouchAccel: 20
+    slideAccel: 1
+    backflipJumpVel: 10
+    backflipHorizVel: 1
+    backflipHorizScaling: 0.2
+    switchJumpVel: 5
+    spinJumpVel: 20
+    spinJumpPeriod: 0.5
+    lowJumpVel: 5
+    lowJumpHorizVel: 3
+    backflipLaunchJumpVel: 8
+    airPoundLeeway: 0.25
+    airJumpCooldown: 0.5
+    airJumpDrag: 0.8
+    airJumpSpeed: 8
+    groundPoundSpeed: 50
+    groundPoundHorizAccel: 1

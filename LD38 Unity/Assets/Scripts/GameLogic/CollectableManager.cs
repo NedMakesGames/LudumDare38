@@ -9,17 +9,23 @@ namespace SmallWorld.GameLogic {
     public class CollectableManager {
 
         private CollectableList clist;
-        private Command<PhysicsBody> regCmd;
+        private GameState gameState;
+        private PhysicsConstants pconsts;
+        private Message<Vector2> onBouncy;
 
         public CollectableManager(AutoController ctrlr) {
             clist = ctrlr.Components.GetOrRegister<CollectableList>((int)ComponentKeys.Collectables, CollectableList.Create);
-            regCmd = ctrlr.Components.GetOrRegister<Command<PhysicsBody>>((int)ComponentKeys.AddPhysicsBody, Command<PhysicsBody>.Create);
             ctrlr.Components.GetOrRegister<Command<int>>((int)ComponentKeys.OnCollectableCollision, Command<int>.Create).Handler = OnCollision;
+
+            gameState = ctrlr.Components.GetOrRegister<GameState>((int)ComponentKeys.GameState, GameState.Create);
+            pconsts = ctrlr.Game.Components.GetOrRegister<PhysicsConstants>((int)ComponentKeys.PhysicsConstants, PhysicsConstants.Create);
+            onBouncy = ctrlr.Components.GetOrRegister<Message<Vector2>>((int)ComponentKeys.OnBouncyCollision, Message<Vector2>.Create);
 
             Collectable c = new Collectable();
             clist.list.Add(c);
-            c.body.cartesian = new UnityEngine.Vector2(0, -3);
-            c.type = CollectableType.Points;
+            c.body.pos = new UnityEngine.Vector2(0, 5);
+            c.type = CollectableType.Bouncy;
+            c.movement = CollectableMoveType.Orbit;
             c.radius = 0.5f;
             c.alive = true;
 
@@ -32,9 +38,17 @@ namespace SmallWorld.GameLogic {
 
             clist.onChange.Send(index);
 
+            Debug.Log(collectable.type);
+
             switch(collectable.type) {
             case CollectableType.Points:
-
+                gameState.score.Value += pconsts.collect.scoreAmount;
+                break;
+            case CollectableType.Bouncy:
+                onBouncy.Send(collectable.body.pos);
+                break;
+            case CollectableType.GameOver:
+                gameState.phase.State = (int)GamePhase.GameOver;
                 break;
             }
         }

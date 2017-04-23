@@ -15,6 +15,7 @@ namespace SmallWorld.GameLogic {
         public bool grounded;
         public Vector2 cartesian;
         public float height;
+        public bool gravity;
     }
 
     public class PhysicsSimulator : ITicking {
@@ -44,7 +45,10 @@ namespace SmallWorld.GameLogic {
 
         private void Simulate(PhysicsBody body, float deltaTime) {
 
-            body.vel += body.accel * deltaTime + new Vector2(0, -pconsts.gravity * deltaTime);
+            body.vel += body.accel * deltaTime;
+            if(body.gravity) {
+                body.vel.y -= pconsts.gravity * deltaTime;
+            }
             body.pos += body.vel * deltaTime;
             float minRadius = pconsts.earthRadius + body.height;
             body.grounded = body.pos.y <= minRadius;

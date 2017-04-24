@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: db32c42a39eae0c439b862d68c0413a1
+timeCreated: 1492963114
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: 04b30
+  fontNames:
+  - 04b30
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

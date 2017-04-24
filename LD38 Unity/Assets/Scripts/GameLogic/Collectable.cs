@@ -20,6 +20,9 @@ namespace SmallWorld.GameLogic {
         public CollectableMoveType movement;
         public float radius;
         public bool alive;
+        public float spawnUncollidableTimer;
+        public Vector2 startPosition;
+        public float wiggleTimer;
 
         public Collectable() {
             body = new PhysicsBody();

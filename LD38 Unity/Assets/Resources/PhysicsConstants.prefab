@@ -51,37 +51,271 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c4b5aea1168be4fb9e8bc105f2dad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  earthRadius: 2
-  gravity: 64
+  earthRadius: 4
+  gravity: 32
   player:
-    height: 0.125
-    snapVel: 1
-    maxVel: 2
-    upAccel: 2
+    height: 0.3125
+    crouchHeight: 0.1875
+    snapVel: 0.5
+    maxVel: 1
+    upAccel: 3
     downAccel: 10
     axisSnapThreshhold: 0.9
-    jumpVel: 8
+    jumpVel: 6
     jumpHoldTime: 0.2
     jumpHoldSpeedMinMult: 0.75
     jumpHorizAccel: 1
     landingMultiJumpPeriod: 0.25
     jumpTriggerLeeway: 0.25
-    jumpHeightScaling: 0.5
+    jumpHeightScaling: 0.25
     crouchMaxVel: 0.5
     crouchAccel: 20
     slideAccel: 1
-    backflipJumpVel: 10
+    backflipJumpVel: 4
     backflipHorizVel: 1
     backflipHorizScaling: 0.2
-    switchJumpVel: 5
-    spinJumpVel: 20
-    spinJumpPeriod: 0.5
-    lowJumpVel: 5
-    lowJumpHorizVel: 3
+    switchJumpVel: 2
+    switchJumpHeightHorizScale: 3
+    switchJumpMoveMult: 1.5
+    spinJumpVel: 30
+    spinJumpPeriod: 0.25
+    lowJumpVel: 3
+    lowJumpHorizVel: 1
     backflipLaunchJumpVel: 8
-    airPoundLeeway: 0.25
+    airPoundLeeway: 0.15
     airJumpCooldown: 0.5
     airJumpDrag: 0.8
     airJumpSpeed: 8
     groundPoundSpeed: 50
     groundPoundHorizAccel: 1
+  collect:
+    scoreAmount: 1
+    heartRadius: 1
+    rockRadius: 1
+    bouncyRadius: 1
+    spawnUncollidablePeriod: 0.5
+    numHeartsPerScore:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0.5
+        tangentMode: 65
+      - serializedVersion: 2
+        time: 10
+        value: 6
+        inSlope: 0.5
+        outSlope: 0.2
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 30
+        value: 10
+        inSlope: 0.2
+        outSlope: 0
+        tangentMode: 5
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    numBouncePerScore:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0.10110974
+        value: 0.0017761987
+        inSlope: 0
+        outSlope: 3.3354726
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 1
+        value: 3
+        inSlope: 3.3354726
+        outSlope: 0.5
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 21
+        value: 13
+        inSlope: 0.5
+        outSlope: 0.33333334
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 51
+        value: 23
+        inSlope: 0.33333334
+        outSlope: 0
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    numRocksPerScore:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 3
+        value: 1
+        inSlope: 0.33333334
+        outSlope: 0.5
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 23
+        value: 11
+        inSlope: 0.5
+        outSlope: 0.25
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 43
+        value: 16
+        inSlope: 0.25
+        outSlope: 0
+        tangentMode: 5
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    maxHeightPerScore:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 7
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 1
+        value: 8
+        inSlope: 1
+        outSlope: -0
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 3
+        value: 8
+        inSlope: 0
+        outSlope: 0.7777778
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 12
+        value: 15
+        inSlope: 0.7777778
+        outSlope: 0.39473686
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 50
+        value: 30
+        inSlope: 0.39473686
+        outSlope: 0
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    minHeightPerScore:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 6
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 1
+        value: 7
+        inSlope: 1
+        outSlope: -0.071837656
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    topHeavyLeeway: 2
+    orbitSpeedMin:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0.5
+        inSlope: 0
+        outSlope: 0.025
+        tangentMode: 65
+      - serializedVersion: 2
+        time: 20
+        value: 1
+        inSlope: 0.025
+        outSlope: 0
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    orbitSpeedMax:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0.5
+        inSlope: 0
+        outSlope: 0.033333335
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 30
+        value: 1.5
+        inSlope: 0.033333335
+        outSlope: 0
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    heartOrbitChance:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 5
+        value: 0
+        inSlope: 0
+        outSlope: 0.022222223
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 50
+        value: 1
+        inSlope: 0.022222223
+        outSlope: 0
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    bouncyOrbitChance:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0.63345337
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0.63345337
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    wigglePeriod: 4
+    wiggleAmplitude: 0.25
+  camera:
+    minSize: 7.5
+    abovePlayerSpace: 2
+    introStartSize: 1000
+    introPeriod: 3
+    zoomInAccel: 3

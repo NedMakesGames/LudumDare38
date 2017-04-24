@@ -19,5 +19,6 @@ namespace SmallWorld.GameLogic {
         PlayerCrouchBtn,
         GameState,
         OnBouncyCollision,
+        AudioRegistry,
     }
 }

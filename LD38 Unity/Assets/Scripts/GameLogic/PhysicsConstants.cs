@@ -16,6 +16,7 @@ namespace SmallWorld.GameLogic {
         [Serializable]
         public class Player {
             public float height;
+            public float crouchHeight;
 
             public float snapVel;
             public float maxVel;
@@ -39,6 +40,8 @@ namespace SmallWorld.GameLogic {
             public float backflipHorizScaling;
 
             public float switchJumpVel;
+            public float switchJumpHeightHorizScale;
+            public float switchJumpMoveMult;
 
             public float spinJumpVel;
             public float spinJumpPeriod;
@@ -59,8 +62,33 @@ namespace SmallWorld.GameLogic {
         [Serializable]
         public class Collectables {
             public int scoreAmount;
+            public float heartRadius;
+            public float rockRadius;
+            public float bouncyRadius;
+            public float spawnUncollidablePeriod;
+            public AnimationCurve numHeartsPerScore;
+            public AnimationCurve numBouncePerScore;
+            public AnimationCurve numRocksPerScore;
+            public AnimationCurve maxHeightPerScore;
+            public AnimationCurve minHeightPerScore;
+            public float topHeavyLeeway;
+            public AnimationCurve orbitSpeedMin, orbitSpeedMax;
+            public AnimationCurve heartOrbitChance;
+            public AnimationCurve bouncyOrbitChance;
+            public float wigglePeriod;
+            public float wiggleAmplitude;
         }
         public Collectables collect;
+
+        [Serializable]
+        public class Camera {
+            public float minSize;
+            public float abovePlayerSpace;
+            public float introStartSize;
+            public float introPeriod;
+            public float zoomInAccel;
+        }
+        public new Camera camera;
 
         public static PhysicsConstants Create() {
             return Resources.Load<GameObject>("PhysicsConstants").GetComponent<PhysicsConstants>();

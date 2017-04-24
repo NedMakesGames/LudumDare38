@@ -15,10 +15,11 @@ namespace SmallWorld.GameLogic.PlayerStates {
         }
 
         public override void Enter() {
-            player.body.gravity = false;
+            //player.body.gravity = false;
             lastMoveInput = manager.HasMoveInput();
-            player.noGravTimer = 0;
+            //player.noGravTimer = 0;
             player.spinCount = 0;
+            player.body.height = pconsts.player.height;
         }
 
         public override void Tick(float deltaTime) {
@@ -37,13 +38,16 @@ namespace SmallWorld.GameLogic.PlayerStates {
             manager.RefreshMultiJumpTimer(deltaTime);
             if(manager.HasMoveInput()) {
                 if(!lastMoveInput) {
+                    audio.startMove.Play();
                     player.body.vel.x = manager.HorizInput() * pconsts.player.snapVel;
                 }
                 lastMoveInput = true;
                 manager.DoHorizAccel(manager.HorizInput() * pconsts.player.maxVel, pconsts.player.upAccel * deltaTime);
+                player.anim = PlayerCharacter.Animation.Walk;
             } else {
                 lastMoveInput = false;
                 manager.DoHorizAccel(0, pconsts.player.downAccel * deltaTime);
+                player.anim = PlayerCharacter.Animation.Idle;
             }
 
             if(player.flipping == PlayerCharacter.FlipMode.Flipping && !manager.IsCrouchPressed()) {
@@ -52,6 +56,8 @@ namespace SmallWorld.GameLogic.PlayerStates {
             if(manager.HasJumpTrigger()) {
                 if(player.flipping == PlayerCharacter.FlipMode.Released) {
                     manager.DoBackflipLaunchJump();
+                } else if(player.flipping == PlayerCharacter.FlipMode.Flipping) {
+                    manager.DoBackflip();
                 } else if(player.spinCount > 2) {
                     manager.DoSpinJump();
                 } else { 

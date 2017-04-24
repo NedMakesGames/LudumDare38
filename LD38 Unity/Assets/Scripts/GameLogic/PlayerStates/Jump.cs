@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace SmallWorld.GameLogic.PlayerStates {
     class Jump : PlayerMoveManager.StateController {
@@ -20,14 +21,15 @@ namespace SmallWorld.GameLogic.PlayerStates {
         public override void Enter() {
             airJumpTimer = 0;
             airJumpState = AirJumpState.Ready;
+            player.body.height = pconsts.player.height;
         }
 
         public override void Tick(float deltaTime) {
-            player.noGravTimer -= deltaTime;
-            player.body.gravity = player.noGravTimer <= 0;
+            //player.noGravTimer -= deltaTime;
+            //player.body.gravity = player.noGravTimer <= 0;
             manager.DoHorizAccel(manager.HorizInput() * pconsts.player.maxVel, pconsts.player.jumpHorizAccel * deltaTime);
             if(player.body.grounded) {
-                player.multiJumpTimer = 0;
+                audio.land.Play();
                 manager.TransferState(PlayerMoveManager.State.Grounded);
             } else if(player.flipping == PlayerCharacter.FlipMode.Flipping && !manager.IsCrouchPressed()) {
                 player.flipping = PlayerCharacter.FlipMode.Released;
@@ -36,7 +38,7 @@ namespace SmallWorld.GameLogic.PlayerStates {
                 case AirJumpState.Ready:
                     if(manager.IsCrouchPressed()) {
                         player.body.vel.x *= pconsts.player.airJumpDrag;
-                        player.body.vel.y = 0;
+                        player.body.vel.y = Mathf.Min(0, player.body.vel.y);
                         airJumpTimer = 0;
                         airJumpState = AirJumpState.Pound;
                     }

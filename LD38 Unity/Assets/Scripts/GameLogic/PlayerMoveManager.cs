@@ -13,11 +13,13 @@ namespace SmallWorld.GameLogic {
             protected PlayerMoveManager manager;
             protected PhysicsConstants pconsts;
             protected PlayerCharacter player;
+            protected AudioRegistry audio;
 
             public StateController(PlayerMoveManager manager) {
                 this.manager = manager;
                 this.player = manager.player;
                 this.pconsts = manager.pconsts;
+                this.audio = manager.audio;
             }
 
             public abstract void Enter();
@@ -51,6 +53,7 @@ namespace SmallWorld.GameLogic {
         private SubscribableBool jumpBtn;
         private SubscribableBool crouchBtn;
         private GameState gameState;
+        private AudioRegistry audio;
 
         private PhysicsConstants pconsts;
         private State activeState;
@@ -58,6 +61,7 @@ namespace SmallWorld.GameLogic {
 
         private float jumpLeeway;
         private bool lastJumpBtn;
+        private float jumpFlairAnimTimer;
 
         public PlayerMoveManager(AutoController ctrlr) {
             player = ctrlr.Components.GetOrRegister<PlayerCharacter>((int)ComponentKeys.PlayerCharacter, PlayerCharacter.Create);
@@ -67,10 +71,12 @@ namespace SmallWorld.GameLogic {
             crouchBtn = ctrlr.Components.GetOrRegister<SubscribableBool>((int)ComponentKeys.PlayerCrouchBtn, SubscribableBool.Create);
             pconsts = ctrlr.Game.Components.GetOrRegister<PhysicsConstants>((int)ComponentKeys.PhysicsConstants, PhysicsConstants.Create);
             gameState = ctrlr.Components.GetOrRegister<GameState>((int)ComponentKeys.GameState, GameState.Create);
+            audio = ctrlr.Components.GetOrRegister<AudioRegistry>((int)ComponentKeys.AudioRegistry, AudioRegistry.Create);
             ctrlr.Components.GetOrRegister<Message<Vector2>>((int)ComponentKeys.OnBouncyCollision, Message<Vector2>.Create)
                 .Subscribe(new SimpleListener<Vector2>(OnBouncyCollision));
 
             player.body.height = pconsts.player.height;
+            player.body.gravity = true;
             player.facing = 1;
 
             states = new List<StateController>();
@@ -135,10 +141,12 @@ namespace SmallWorld.GameLogic {
         private void DoJump(float vel) {
             jumpLeeway = 0;
             player.body.vel.y = vel;
+            player.multiJumpTimer = 0;
         }
 
         public float MultiJumpMultiplier(float scaling) {
-            return 1 + player.multiJumpCount * scaling;
+            //return 1 + player.multiJumpCount * scaling;
+            return 1 + Mathf.Pow(player.multiJumpCount, scaling);
         }
 
         public bool RefreshMultiJumpTimer(float deltaTime) {
@@ -159,54 +167,74 @@ namespace SmallWorld.GameLogic {
         }
 
         public void DoHighJump() {
-            Debug.Log(string.Format("{0}: High jump", Time.frameCount));
+            //Debug.Log(string.Format("{0}: High jump", Time.frameCount));
             DoJump(pconsts.player.jumpVel * MultiJumpMultiplier(pconsts.player.jumpHeightScaling));
+            audio.highJump.Play();
+            player.flipping = PlayerCharacter.FlipMode.None;
         }
 
         public void DoSwitchJump() {
-            Debug.Log(string.Format("{0}: Switch jump", Time.frameCount));
-            DoJump(pconsts.player.switchJumpVel * MultiJumpMultiplier(pconsts.player.jumpHeightScaling));
-            player.body.vel.x = -player.body.vel.x;
+            //Debug.Log(string.Format("{0}: Switch jump", Time.frameCount));
+            player.body.vel.x = -player.body.vel.x * pconsts.player.switchJumpMoveMult;
+            DoJump((pconsts.player.switchJumpVel + Mathf.Abs(player.body.vel.x) * pconsts.player.switchJumpHeightHorizScale)
+                * MultiJumpMultiplier(pconsts.player.jumpHeightScaling));
+            audio.switchJump.Play();
+            player.flipping = PlayerCharacter.FlipMode.None;
         }
 
         public void DoSpinJump() {
-            Debug.Log(string.Format("{0}: Spin jump", Time.frameCount));
+            //Debug.Log(string.Format("{0}: Spin jump", Time.frameCount));
             DoJump(pconsts.player.spinJumpVel * MultiJumpMultiplier(pconsts.player.jumpHeightScaling));
             player.body.vel.x = 0;
+            audio.spinJump.Play();
+            player.flipping = PlayerCharacter.FlipMode.None;
         }
 
         public void DoLowJump() {
-            Debug.Log(string.Format("{0}: Low jump", Time.frameCount));
+            //Debug.Log(string.Format("{0}: Low jump", Time.frameCount));
             DoJump(pconsts.player.lowJumpVel * MultiJumpMultiplier(pconsts.player.jumpHeightScaling));
             player.body.vel.x = player.facing * pconsts.player.lowJumpHorizVel * MultiJumpMultiplier(pconsts.player.backflipHorizScaling);
-            player.noGravTimer = 0;
+            //player.noGravTimer = 0;
+            audio.lowJump.Play();
+            player.flipping = PlayerCharacter.FlipMode.None;
         }
 
         public void DoBackflip() {
-            Debug.Log(string.Format("{0}: Back jump {1}", Time.frameCount, player.multiJumpCount));
+            //Debug.Log(string.Format("{0}: Back jump {1}", Time.frameCount, player.multiJumpCount));
             DoJump(pconsts.player.backflipJumpVel * MultiJumpMultiplier(pconsts.player.jumpHeightScaling));
             player.flipping = PlayerCharacter.FlipMode.Flipping;
             player.body.vel.x = -player.facing * pconsts.player.backflipHorizVel * MultiJumpMultiplier(pconsts.player.backflipHorizScaling);
+            audio.backJump.Play();
         }
 
         public void DoBackflipLaunchJump() {
-            Debug.Log(string.Format("{0}: Back launch jump {1}", Time.frameCount, player.multiJumpCount));
+            //Debug.Log(string.Format("{0}: Back launch jump {1}", Time.frameCount, player.multiJumpCount));
             player.flipping = PlayerCharacter.FlipMode.None;
             DoJump(pconsts.player.backflipLaunchJumpVel * MultiJumpMultiplier(pconsts.player.jumpHeightScaling));
             player.body.vel.x = player.facing * pconsts.player.backflipHorizVel * MultiJumpMultiplier(pconsts.player.backflipHorizScaling);
+            audio.highJump.Play();
         }
 
         public void DoGroundPound() {
             player.body.vel.x = 0;
             player.body.vel.y = -pconsts.player.groundPoundSpeed;
+            player.flipping = PlayerCharacter.FlipMode.None;
         }
 
         public void DoAirJump() {
             player.body.vel.y = pconsts.player.airJumpSpeed;
+            audio.airJump.Play();
+            player.flipping = PlayerCharacter.FlipMode.None;
         }
 
         private void OnBouncyCollision(Vector2 pos) {
-            DoHighJump();
+            player.hitBounce = true;
+            if(player.flipping == PlayerCharacter.FlipMode.Flipping) {
+                DoBackflip();
+            } else {
+                player.flipping = PlayerCharacter.FlipMode.None;
+                DoHighJump();
+            }
             TransferState(State.JumpHold);
         }
 
@@ -215,14 +243,15 @@ namespace SmallWorld.GameLogic {
                 float m = HorizInput();
                 if(m > 0) {
                     player.facing = 1;
-                } else {
+                } else if(m < 0) {
                     player.facing = -1;
                 }
             }
         }
 
         public bool CheckJumpHoldEnd(float startSpeed, float timer) {
-            if(!IsJumpPressed() || timer >= pconsts.player.jumpHoldTime) {
+            if((!IsJumpPressed() && !player.hitBounce) || timer >= pconsts.player.jumpHoldTime) {
+                player.hitBounce = false;
                 float holdPerc = Mathf.Clamp01(timer / pconsts.player.jumpHoldTime);
                 player.multiJumpCount += holdPerc;
                 player.body.vel.y *= Mathf.Lerp(pconsts.player.jumpHoldSpeedMinMult, 1, holdPerc);
@@ -245,9 +274,18 @@ namespace SmallWorld.GameLogic {
             }
             lastJumpBtn = jumpBtn.Value;
 
-            
-
             states[(int)activeState].Tick(deltaTime);
+
+            if(activeState == State.Jump || activeState == State.JumpHold) {
+                jumpFlairAnimTimer -= deltaTime;
+                if(jumpFlairAnimTimer <= 0) {
+                    if(player.body.vel.y <= 0) {
+                        player.anim = PlayerCharacter.Animation.Fall;
+                    } else {
+                        player.anim = PlayerCharacter.Animation.Jump;
+                    }
+                }
+            }
         }
     }
 }

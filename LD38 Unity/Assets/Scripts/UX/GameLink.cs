@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using SmallWorld.GameLogic;
 using Baluga3.GameFlowLogic;
+using UnityEngine.SceneManagement;
 
 namespace SmallWorld.UX {
     public class GameLink : MonoBehaviour {
@@ -34,6 +35,11 @@ namespace SmallWorld.UX {
                 Load(LoadMode.Unknown);
                 return ((AutoController)instance.game.Controller).Components;
             }
+        }
+
+        public static void Restart() {
+            SceneManager.LoadScene("Play");
+            instance.LoadInstance(LoadMode.Play);
         }
 
         private SmallWorldGame game;

@@ -41,6 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BGStars
+    uniqueID: 575720491
+    locked: 0
   - name: Earth
     uniqueID: 787480263
     locked: 0

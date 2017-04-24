@@ -9,6 +9,11 @@ namespace SmallWorld.GameLogic {
         public enum FlipMode {
             None, Flipping, Released
         }
+        public enum Animation {
+            Idle, Walk, Crouch, Slide,
+            Fall,
+            Jump, GameOver
+        }
 
         public PhysicsBody body;
         public int facing;
@@ -16,7 +21,9 @@ namespace SmallWorld.GameLogic {
         public float multiJumpTimer;
         public int spinCount;
         public FlipMode flipping;
-        public float noGravTimer;
+        //public float noGravTimer;
+        public Animation anim;
+        public bool hitBounce;
 
         public PlayerCharacter() {
             this.body = new PhysicsBody();

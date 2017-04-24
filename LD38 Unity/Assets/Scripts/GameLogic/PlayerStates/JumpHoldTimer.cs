@@ -16,14 +16,15 @@ namespace SmallWorld.GameLogic.PlayerStates {
         }
 
         public override void Enter() {
-            player.body.gravity = false;
+            //player.body.gravity = false;
             startJumpVel = player.body.vel.y;
             timer = 0;
+            player.body.height = pconsts.player.height;
         }
 
         public override void Tick(float deltaTime) {
             timer += deltaTime;
-            player.noGravTimer -= deltaTime;
+            //player.noGravTimer -= deltaTime;
             manager.DoHorizAccel(manager.HorizInput() * pconsts.player.maxVel, pconsts.player.jumpHorizAccel * deltaTime);
             if(manager.CheckJumpHoldEnd(startJumpVel, timer)) {
                 manager.TransferState(PlayerMoveManager.State.Jump);

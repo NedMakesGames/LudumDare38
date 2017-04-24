@@ -12,6 +12,10 @@ namespace SmallWorld.UX {
 
         [SerializeField]
         private GameObject pointPrefab;
+        [SerializeField]
+        private GameObject bouncyPrefab;
+        [SerializeField]
+        private GameObject gameOverPrefab;
 
         private CollectableList clist;
         private List<CollectablePositioner> alive;
@@ -36,6 +40,7 @@ namespace SmallWorld.UX {
                 }
             }
             if(gobj != null) {
+                CollectAnimation.SpawnFor(c.type, c.body.cartesian, Quaternion.Euler(0, 0, -c.body.pos.x * Mathf.Rad2Deg));
                 SimplePool.Despawn(gobj);
             }
             if(c.alive) {
@@ -48,9 +53,13 @@ namespace SmallWorld.UX {
             GameObject prefab = null;
             switch(c.type) {
             case CollectableType.Points:
-            case CollectableType.Bouncy:
-            case CollectableType.GameOver:
                 prefab = pointPrefab;
+                break;
+            case CollectableType.Bouncy:
+                prefab = bouncyPrefab;
+                break;
+            case CollectableType.GameOver:
+                prefab = gameOverPrefab;
                 break;
             }
             if(prefab == null) {

@@ -12,13 +12,17 @@ namespace SmallWorld.GameLogic.PlayerStates {
 
         public override void Enter() {
             player.multiJumpCount = 0;
-            player.body.gravity = true;
+            //player.body.gravity = true;
+            player.body.height = pconsts.player.height;
+            audio.groundPound.Play();
         }
 
         public override void Tick(float deltaTime) {
             manager.DoHorizAccel(manager.HorizInput() * pconsts.player.maxVel, pconsts.player.groundPoundHorizAccel * deltaTime);
             if(player.body.grounded) {
-                player.multiJumpTimer = 0;
+                player.multiJumpCount = 0;
+                player.multiJumpTimer = pconsts.player.landingMultiJumpPeriod;
+                audio.land.Play();
                 manager.TransferState(PlayerMoveManager.State.Grounded);
             }
         }

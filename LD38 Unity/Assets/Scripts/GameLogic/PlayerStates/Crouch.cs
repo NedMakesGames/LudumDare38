@@ -10,7 +10,10 @@ namespace SmallWorld.GameLogic.PlayerStates {
         }
 
         public override void Enter() {
-
+            //player.body.gravity = true;
+            player.body.height = pconsts.player.crouchHeight;
+            player.anim = PlayerCharacter.Animation.Crouch;
+            audio.crouch.Play();
         }
 
         public override void Tick(float deltaTime) {

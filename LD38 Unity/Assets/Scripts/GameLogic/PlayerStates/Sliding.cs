@@ -12,7 +12,10 @@ namespace SmallWorld.GameLogic.PlayerStates {
         }
 
         public override void Enter() {
-
+            //player.body.gravity = true;
+            player.body.height = pconsts.player.crouchHeight;
+            player.anim = PlayerCharacter.Animation.Slide;
+            audio.crouch.Play();
         }
 
         public override void Tick(float deltaTime) {
@@ -24,7 +27,7 @@ namespace SmallWorld.GameLogic.PlayerStates {
                 manager.TransferState(PlayerMoveManager.State.Crouch);
             } else if(manager.HasJumpTrigger()) {
                 manager.DoLowJump();
-                manager.TransferState(PlayerMoveManager.State.Jump);
+                manager.TransferState(PlayerMoveManager.State.JumpHold);
             }
         }
     }

@@ -13,6 +13,9 @@ namespace SmallWorld.GameLogic.PlayerStates {
 
         public override void Enter() {
             player.body.vel = Vector2.zero;
+            player.body.height = pconsts.player.crouchHeight;
+            //player.body.gravity = true;
+            player.anim = PlayerCharacter.Animation.GameOver;
         }
 
         public override void Tick(float deltaTime) {
